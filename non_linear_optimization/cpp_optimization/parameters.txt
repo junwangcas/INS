@@ -1,0 +1,2 @@
+# for optimization
+Optimizer.nDepthWeight=0.5

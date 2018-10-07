@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall   -O0  -march=native -g  -rdynamic CMakeFiles/optimization_GPSIMU.dir/src/paramReader.cpp.o CMakeFiles/optimization_GPSIMU.dir/src/main.cpp.o CMakeFiles/optimization_GPSIMU.dir/src/factors.cpp.o CMakeFiles/optimization_GPSIMU.dir/src/math_utility.cpp.o  -o optimization_GPSIMU /usr/local/lib/libceres.a -lglog -llapack -lblas -lgomp -lpthread 

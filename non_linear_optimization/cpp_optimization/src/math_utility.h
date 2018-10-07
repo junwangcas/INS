@@ -12,6 +12,9 @@ public:
     template <typename T>
     static Eigen::Matrix<T,3,3> to_rotation(T a1,T a2, T a3);
 
+    template <typename T>
+    static T wrap_PI(T radian);
+
 
     template<typename T>
     Eigen::Matrix<T,2,2> to_rotation_tmp(T yaw) {

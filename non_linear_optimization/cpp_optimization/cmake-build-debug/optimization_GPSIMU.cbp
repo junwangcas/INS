@@ -111,6 +111,12 @@
 		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/src/math_utility.h">
 			<Option target="optimization_GPSIMU"/>
 		</Unit>
+		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/src/optimizer.cpp">
+			<Option target="optimization_GPSIMU"/>
+		</Unit>
+		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/src/optimizer.h">
+			<Option target="optimization_GPSIMU"/>
+		</Unit>
 		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/src/paramReader.cpp">
 			<Option target="optimization_GPSIMU"/>
 		</Unit>
@@ -133,6 +139,9 @@
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
 		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/../../../../../../usr/local/lib/cmake/Ceres/FindEigen.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
+		</Unit>
+		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/../../../../../../usr/local/lib/cmake/Ceres/FindGflags.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Ceres\"/>
 		</Unit>
 		<Unit filename="/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/../../../../../../usr/local/lib/cmake/Ceres/FindGlog.cmake">

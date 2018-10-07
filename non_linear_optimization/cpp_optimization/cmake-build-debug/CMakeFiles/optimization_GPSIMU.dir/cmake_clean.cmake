@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/optimization_GPSIMU.dir/src/main.cpp.o"
   "CMakeFiles/optimization_GPSIMU.dir/src/factors.cpp.o"
   "CMakeFiles/optimization_GPSIMU.dir/src/math_utility.cpp.o"
+  "CMakeFiles/optimization_GPSIMU.dir/src/optimizer.cpp.o"
   "optimization_GPSIMU.pdb"
   "optimization_GPSIMU"
 )

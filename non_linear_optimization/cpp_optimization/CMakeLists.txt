@@ -30,7 +30,7 @@ set(optimization_SOURCE_FILES
         include/paramReader.h
         src/paramReader.cpp
         src/main.cpp
-        include/struct.h src/factors.cpp src/factors.h src/math_utility.cpp src/math_utility.h)
+        include/struct.h src/factors.cpp src/factors.h src/math_utility.cpp src/math_utility.h src/optimizer.cpp src/optimizer.h)
 
 find_package(Ceres REQUIRED)
 include_directories(${CERES_INCLUDE_DIRS})

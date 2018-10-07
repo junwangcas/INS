@@ -16,7 +16,7 @@ string nfileNodeWrite = "../data/node_opti.txt";
 
 
 void ReadNode(string nfileNode,vector< Vector8d>& variable_list){
-    ifstream nfilehand(nfileNode);
+    ifstream nfilehand(nfileNode.c_str());
     string line;
     while (getline(nfilehand,line)){
         // line to vector double;
@@ -50,7 +50,7 @@ void ReadNode(string nfileNode,vector< Vector8d>& variable_list){
 }
 
 void ReadEdge(string nfileEdge,vector< Vector9d>& nEdgeLst){
-    ifstream nfilehand(nfileEdge);
+    ifstream nfilehand(nfileEdge.c_str());
     string line;
     while (getline(nfilehand,line)){
         // line to vector double;
@@ -86,7 +86,7 @@ void ReadEdge(string nfileEdge,vector< Vector9d>& nEdgeLst){
 }
 
 void WriteNode(vector< Vector8d>& nPoseLst,vector< Vector4d>& nPtsLst){
-    ofstream nfilehand(nfileNodeWrite);
+    ofstream nfilehand(nfileNodeWrite.c_str());
     //先写这个pose；
     for (size_t i=0;i<nPoseLst.size();i++){
         Vector8d nPose = nPoseLst[i];
@@ -118,16 +118,16 @@ void WriteNode(vector< Vector8d>& nPoseLst,vector< Vector4d>& nPtsLst){
 int main(){
     // 1：首先读取node文件，两种node，pose的node保存在vector《Vector8d》中。
     // map point 保存在vector《Vector4D》中。
-    vector< Vector8d> nPoseLst;
-    ReadNode(nsFileNode,nPoseLst,nPtsLst);
+    vector< Vector8d> variable_list;
+    ReadNode(nsFileNode,variable_list);
 
     // 2： 然后读取edge的文件，只有一种edge，保存在vector《Vector13D》 Vector13D这种结构需要自己定义一下。
-    vector< Vector13d> nEdgeLst;
+    vector< Vector9d> nEdgeLst;
     ReadEdge(nsFileEdge,nEdgeLst);
     // 3: 将这三个参数传递到优化函数中去，返回优化之后的pose的数据，以及点的数据。然后写到文件中。
-    Optimizer nOptimizer;
-    nOptimizer.DoOptimize(nPoseLst,nPtsLst,nEdgeLst);
+    //Optimizer nOptimizer;
+    //nOptimizer.DoOptimize(nPoseLst,nPtsLst,nEdgeLst);
 
     // 将结果保存起来
-    WriteNode(nPoseLst,nPtsLst);
+    //WriteNode(nPoseLst,nPtsLst);
 }

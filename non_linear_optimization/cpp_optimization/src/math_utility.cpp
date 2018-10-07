@@ -13,3 +13,14 @@ Eigen::Matrix<T,3,3> math_utility::to_rotation(T yaw, T pitch, T roll) {
     R = Rz*Ry*Rx;
     return R;
 }
+
+template <typename T>
+T math_utility::wrap_PI(T radian) {
+    while (radian < T(-M_PI)){
+        radian += T(M_PI*2.0);
+    }
+    while (radian > T(M_PI)){
+        radian -= T(M_PI*2.0);
+    }
+    return radian;
+}

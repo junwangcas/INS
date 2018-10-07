@@ -1,8 +1,9 @@
-/home/nvidia/software/clion-2018.2.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization
+/home/nvidia/software/clion-2018.1.6/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization
 Build type: Debug
 -- Found installed version of Eigen: /usr/lib/cmake/eigen3
 -- Found required Ceres dependency: Eigen version 3.2.92 in /usr/include/eigen3
 -- Found required Ceres dependency: glog
+-- Found required Ceres dependency: gflags
 -- Found Ceres version: 1.14.0 installed in: /usr/local with components: [EigenSparse, SparseLinearAlgebraLibrary, LAPACK, SchurSpecializations, OpenMP, Multithreading]
 -- Configuring done
 -- Generating done

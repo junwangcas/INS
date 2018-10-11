@@ -2,6 +2,7 @@
 // Created by junwangcas on 28/09/17.
 //
 #include "struct.h"
+#include "optimizer.h"
 #include <string>
 #include <Eigen/Dense>
 #include <fstream>
@@ -10,13 +11,17 @@
 
 using namespace std;
 using namespace Eigen;
-string nsFileNode = "../data/node_init.txt";
-string nsFileEdge = "../data/edge.txt";
-string nfileNodeWrite = "../data/node_opti.txt";
+string nsFileNode = "../../../data/node_init.txt";
+string nsFileEdge = "../../../data/edge.txt";
+string nfileNodeWrite = "../../../data/node_opti.txt";
 
 
 void ReadNode(string nfileNode,vector< Vector8d>& variable_list){
     ifstream nfilehand(nfileNode.c_str());
+    if (!nfilehand){
+        std::cout<<"read node file open failed\n";
+        exit(1);
+    }
     string line;
     while (getline(nfilehand,line)){
         // line to vector double;
@@ -51,6 +56,10 @@ void ReadNode(string nfileNode,vector< Vector8d>& variable_list){
 
 void ReadEdge(string nfileEdge,vector< Vector9d>& nEdgeLst){
     ifstream nfilehand(nfileEdge.c_str());
+    if (!nfilehand){
+        std::cout<<"read edge file open failed\n";
+        exit(1);
+    }
     string line;
     while (getline(nfilehand,line)){
         // line to vector double;
@@ -127,7 +136,10 @@ int main(){
     // 3: 将这三个参数传递到优化函数中去，返回优化之后的pose的数据，以及点的数据。然后写到文件中。
     //Optimizer nOptimizer;
     //nOptimizer.DoOptimize(nPoseLst,nPtsLst,nEdgeLst);
+    optimizer my_optimizer;
+    my_optimizer.run_optimize(variable_list,nEdgeLst);
 
     // 将结果保存起来
     //WriteNode(nPoseLst,nPtsLst);
+    return 1;
 }

@@ -64,12 +64,14 @@ public:
         // trans _gravity to local;
         Eigen::Matrix<T,3,3> R1 =  math_utility::to_rotation(pose_angle1[0],pose_angle1[1],pose_angle1[2]);
         Eigen::Matrix<T,3,1> bias_ei(bias[0],bias[1],bias[2]);
-        Eigen::Matrix<T,3,1> acc_true = T(_acc_measure) - bias_ei - R1.transpose()*T(_gravity);
+        Eigen::Matrix<T,3,1> acc_measure_ei(static_cast<T>(_acc_measure[0]), static_cast<T>(_acc_measure[1]), static_cast<T>(_acc_measure[2]));
+        Eigen::Matrix<T,3,1> gravity_ei(static_cast<T>(_gravity[0]),static_cast<T>(_gravity[1]),static_cast<T>(_gravity[2]));
+        Eigen::Matrix<T,3,1> acc_true = acc_measure_ei - bias_ei - R1.transpose()*gravity_ei;
         Eigen::Matrix<T,3,1> T1(pose_t1[0],pose_t1[1],pose_t1[2]);
         Eigen::Matrix<T,3,1> T2(pose_t2[0],pose_t2[1],pose_t2[2]);
         Eigen::Matrix<T,3,1> V1(velocity[0],velocity[1],velocity[2]);
 
-        Eigen::Matrix<T,3,1> T2_assum = T1 + V1*T(_unit_time)+ 0.5*acc_true*T(_unit_time)*T(_unit_time);
+        Eigen::Matrix<T,3,1> T2_assum = T1 + V1*static_cast<T>(_unit_time)+ T(0.5)*acc_true*static_cast<T>(_unit_time)*static_cast<T>(_unit_time);
         residual[0] = T2_assum[0] - T2[0];
         residual[1] = T2_assum[1] - T2[1];
         residual[2] = T2_assum[2] - T2[2];

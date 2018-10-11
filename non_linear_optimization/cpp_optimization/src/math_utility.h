@@ -10,7 +10,15 @@
 class math_utility {
 public:
     template <typename T>
-    static Eigen::Matrix<T,3,3> to_rotation(T a1,T a2, T a3);
+    static Eigen::Matrix<T,3,3> to_rotation(T yaw, T pitch, T roll){
+        Eigen::Matrix<T,3,3> Rx,Ry,Rz,R;
+        Rz << cos(yaw), -sin(yaw),0, sin(yaw),cos(yaw),0, 0, 0, 1;
+        Ry << cos(pitch), 0, sin(pitch),0,1,0,-sin(pitch),0,cos(pitch);
+        Rx << T(1.0),T(0.0),T(0.0),T(0.0),cos(roll),-sin(roll),0,sin(roll),cos(roll);
+        R = Rz*Ry*Rx;
+        return R;
+
+    }
 
     template <typename T>
     static T wrap_PI(T radian);

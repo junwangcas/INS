@@ -5,6 +5,10 @@
 #include "factors.h"
 #include "optimizer.h"
 
+optimizer::optimizer() {
+
+}
+
 void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> nEdgeLst) {
     // define ceres problem
     ceres::Problem optimize_problem;
@@ -75,9 +79,9 @@ void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> n
             Vector3d& T2_variable = T_variables[id_T2_local];
             Vector6d& imubias_variable = imubias_varibles[0];
             my_factor_acc->set_measure(measure);
-            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_acc,3,3,3,3,6,3>(my_factor_acc);
-            optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),T_variable.data(),V_variable.data(),
-                                        T2_variable.data(),imubias_variable.data());
+//            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_acc,3,3,3,3,6,3>(my_factor_acc);
+//            optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),T_variable.data(),V_variable.data(),
+//                                        T2_variable.data(),imubias_variable.data());
         } else if (nIdType == 4){
             // add gyro factor;
             factor_gyro* my_factor_gyro = new factor_gyro();
@@ -88,8 +92,8 @@ void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> n
             Vector3d& R2_variable = R_variables[id_R2_local];
             Vector6d& imubias_variable = imubias_varibles[0];
             my_factor_gyro->set_measure(measure);
-            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_gyro,3,3,3,6>(my_factor_gyro);
-            optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),R2_variable.data(),imubias_variable.data());
+            //ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_gyro,3,3,3,6>(my_factor_gyro);
+           // optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),R2_variable.data(),imubias_variable.data());
         } else if (nIdType == 5){
             // add motion model factor;
             factor_motionmodel* my_factor_motion = new factor_motionmodel();
@@ -99,10 +103,15 @@ void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> n
             Vector3d& T_variable = T_variables[id_T_local];
             Vector3d& V_variable = Velocity_variables[id_V_local];
             Vector3d& T2_variable = T_variables[id_T2_local];
-            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_motionmodel,3,3,3,3>(my_factor_motion);
-            optimize_problem.AddResidualBlock(cost_function,NULL,T_variable.data(),V_variable.data(),T2_variable.data());
+            //ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_motionmodel,3,3,3,3>(my_factor_motion);
+            //optimize_problem.AddResidualBlock(cost_function,NULL,T_variable.data(),V_variable.data(),T2_variable.data());
         }
     }
+    ceres::Solver::Options optimize_option;
+    optimize_option.minimizer_progress_to_stdout = true;
+    ceres::Solver::Summary optimize_summary;
+    ceres::Solve(optimize_option,&optimize_problem,&optimize_summary);
+    std::cout<<optimize_summary.BriefReport()<<"\n";
 }
 
 int optimizer::id_glocal_to_local(int id_global, int type) {

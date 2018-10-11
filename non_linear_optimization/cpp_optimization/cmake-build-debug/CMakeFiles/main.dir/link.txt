@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall   -O0  -march=native -g  -rdynamic CMakeFiles/main.dir/src/paramReader.cpp.o CMakeFiles/main.dir/src/main.cpp.o  -o main -loptimization_GPSIMU 

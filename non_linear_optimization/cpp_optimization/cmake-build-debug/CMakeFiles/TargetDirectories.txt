@@ -1,3 +1,0 @@
-/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/nvidia/code/GPS_IMU_Navigation/non_linear_optimization/cpp_optimization/cmake-build-debug/CMakeFiles/optimization_GPSIMU.dir

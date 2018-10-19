@@ -63,8 +63,8 @@ void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> n
             Vector3d& R_variable = R_variables[id_R_local];
             Vector3d& T_variable = T_variables[id_T_local];
             my_factor_velocity->set_measure(measure);
-            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_velocity,3,3,3>(my_factor_velocity);
-            optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),T_variable.data());
+            //ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<factor_velocity,3,3,3>(my_factor_velocity);
+            //optimize_problem.AddResidualBlock(cost_function,NULL,R_variable.data(),T_variable.data());
         } else if (nIdType == 3){
             // add acc factor;
             factor_acc* my_factor_acc = new factor_acc();
@@ -112,6 +112,27 @@ void optimizer::run_optimize(vector<Vector8d> &variable_list, vector<Vector9d> n
     ceres::Solver::Summary optimize_summary;
     ceres::Solve(optimize_option,&optimize_problem,&optimize_summary);
     std::cout<<optimize_summary.BriefReport()<<"\n";
+
+    int id_R = 0,id_T = 0,id_V = 0;
+    for (int i = 0; i < variable_list.size(); i++){
+        Vector8d& variable_val = variable_list[i];
+        // imu bias variable;
+        if (variable_val[0] == 1){
+            variable_val.block<6,1>(2,0) = imubias_varibles[0];
+        }else if (variable_val[1] == 2){
+            // R variables;
+            variable_val.block<3,1>(2,0) = R_variables[id_R];
+            id_R ++;
+        }else if (variable_val[1] == 3){
+            // T variables;
+            variable_val.block<3,1>(2,0) = T_variables[id_T];
+            id_T ++;
+        }else if (variable_val[1] == 4){
+            // velocity variables;
+            variable_val.block<3,1>(2,0) = Velocity_variables[id_V];
+            id_V ++;
+        }
+    }
 }
 
 int optimizer::id_glocal_to_local(int id_global, int type) {

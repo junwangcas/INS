@@ -94,34 +94,31 @@ void ReadEdge(string nfileEdge,vector< Vector9d>& nEdgeLst){
     }
 }
 
-void WriteNode(vector< Vector8d>& nPoseLst,vector< Vector4d>& nPtsLst){
+void WriteNode(vector< Vector8d> variable_list){
     ofstream nfilehand(nfileNodeWrite.c_str());
-    //先写这个pose；
-    for (size_t i=0;i<nPoseLst.size();i++){
-        Vector8d nPose = nPoseLst[i];
-        for (size_t j=0;j<8;j++){
-            if (j==0){
-                nfilehand<<int(nPose(0))<<" ";
-                //fprintf(nfilehand,"%d ",int(nPose(0)));
-            }else{
-                //fprintf(nfilehand,"%f ",int(nPose(j)));
-                nfilehand<<nPose(j)<<" ";
-            }
-        }
-        nfilehand<<"\n";
-        //sprintf(nfilehand,"\n");
+    if (!nfilehand){
+        std::cout<<"write node file open error \n";
+        exit(0);
     }
-    //再写map point部分；
-    for (size_t i=0;i<nPtsLst.size();i++){
-        Vector4d nPts = nPtsLst[i];
-        for (size_t j=0;j<4;j++){
-            if (j==0){
-                nfilehand<<int(nPts(0))<<" ";
-            }else{
-                nfilehand<<nPts(j)<<" ";
-            }
+    for (int i=0;i<variable_list.size();i++){
+        Vector8d variable_val = variable_list[i];
+        // imu bias variable;
+        if (variable_val[0] == 1){
+            Vector6d imu_variable = variable_val.block<6,1>(2,0);
+            nfilehand << 1 <<" "<<imu_variable.transpose()<<"\n";
+        }else if (variable_val[1] == 2){
+            // R variables;
+            Vector3d R_variable = variable_val.block<3,1>(2,0);
+            nfilehand << 2 <<" "<< R_variable.transpose()<<"\n";
+        }else if (variable_val[1] == 3){
+            // T variables;
+            Vector3d T_variable = variable_val.block<3,1>(2,0);
+            nfilehand << 3 <<" "<<T_variable.transpose()<<"\n";
+        }else if (variable_val[1] == 4){
+            // velocity variables;
+            Vector3d Velocity_variable = variable_val.block<3,1>(2,0);
+            nfilehand<<4<<" "<<Velocity_variable.transpose()<<"\n";
         }
-        nfilehand<<"\n";
     }
 }
 int main(){
@@ -140,6 +137,6 @@ int main(){
     my_optimizer.run_optimize(variable_list,nEdgeLst);
 
     // 将结果保存起来
-    //WriteNode(nPoseLst,nPtsLst);
+    WriteNode(variable_list);
     return 1;
 }

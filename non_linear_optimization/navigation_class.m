@@ -5,9 +5,9 @@ classdef navigation_class < handle
     properties
         % variables 
         bias = 0;
-        R_list = 0;
-        T_list = 0;
-        V_list = 0;
+        R_list = [];
+        T_list = [];
+        V_list = [];
         num_time = 0;
         % files;
         file_node_init = '../data/node_init.txt';

@@ -13,4 +13,8 @@ navigation_data.raw_data = in_data;
 writing_node(navigation_data);
 % writing edges;
 writing_edges(navigation_data);
+% optimization;
+
+navigation_data = load_nodes(navigation_data);
+
 

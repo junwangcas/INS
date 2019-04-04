@@ -89,10 +89,10 @@ ylabels={'X-axis bias [m/s^2]','Y-axis bias [m/s^2]','Z-axis bias [m/s^2]'};
 h=zeros(1,2);
 for k=1:3
     subplot(3,1,k)
-    h(1)=plot(in_data.IMU.t,out_data.delta_u_h(k,:),'r');
+    h(1)=plot(in_data.IMU.t,out_data.x_deltau_h(k,:),'r');
     hold on
-    h(2)=plot(in_data.IMU.t,3*sqrt(out_data.diag_P(9+k,:))+out_data.delta_u_h(k,:),'k--');
-    plot(in_data.IMU.t,-3*sqrt(out_data.diag_P(9+k,:))+out_data.delta_u_h(k,:),'k--')
+    h(2)=plot(in_data.IMU.t,3*sqrt(out_data.diag_P(9+k,:))+out_data.x_deltau_h(k,:),'k--');
+    plot(in_data.IMU.t,-3*sqrt(out_data.diag_P(9+k,:))+out_data.x_deltau_h(k,:),'k--')
     grid on
     ylabel(ylabels{k})
     if k==1
@@ -109,10 +109,10 @@ ylabels={'X-axis bias [deg/s]','Y-axis bias [deg/s]','Z-axis bias [deg/s]'};
 h=zeros(1,2);
 for k=1:3
     subplot(3,1,k)
-    h(1)=plot(in_data.IMU.t,180/pi*out_data.delta_u_h(3+k,:),'r');
+    h(1)=plot(in_data.IMU.t,180/pi*out_data.x_deltau_h(3+k,:),'r');
     hold on
-    h(2)=plot(in_data.IMU.t,3*180/pi*sqrt(out_data.diag_P(12+k,:))+180/pi*out_data.delta_u_h(3+k,:),'k--');
-    plot(in_data.IMU.t,-3*180/pi*sqrt(out_data.diag_P(12+k,:))+180/pi*out_data.delta_u_h(3+k,:),'k--')
+    h(2)=plot(in_data.IMU.t,3*180/pi*sqrt(out_data.diag_P(12+k,:))+180/pi*out_data.x_deltau_h(3+k,:),'k--');
+    plot(in_data.IMU.t,-3*180/pi*sqrt(out_data.diag_P(12+k,:))+180/pi*out_data.x_deltau_h(3+k,:),'k--')
     grid on
     ylabel(ylabels{k})
     if k==1

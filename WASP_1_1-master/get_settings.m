@@ -21,6 +21,7 @@ settings.non_holonomic = 'on';
 settings.speed_aiding = 'on';
 
 settings.init_heading = 320*pi/180;
+settings.init_heading = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%             FILTER PARAMETERS           %% 

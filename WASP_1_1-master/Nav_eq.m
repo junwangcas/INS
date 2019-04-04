@@ -16,7 +16,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %function x=Nav_eq(x,u,dt)
-function x=Nav_eq(x,u,dt,g_t)
+function p_v_theta=Nav_eq(p_v_theta,u_meansure_with_bias,dt,g_t)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,7 +28,7 @@ function x=Nav_eq(x,u,dt,g_t)
 %g_t=gravity(59,0);
 %g_t=gravity(55,0);
 
-f_t=q2dcm(x(7:10))*u(1:3);
+f_t=q2dcm(p_v_theta(7:10))*u_meansure_with_bias(1:3);
 
 % Subtract gravity, to obtain accelerations in tangent plane coordinates
 acc_t=f_t-g_t;
@@ -42,7 +42,7 @@ A(3,6)=dt;
 B=[(dt^2)/2*eye(3);dt*eye(3)];
 
 % Position and velocity update
-x(1:6)=A*x(1:6)+B*acc_t;
+p_v_theta(1:6)=A*p_v_theta(1:6)+B*acc_t;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -52,7 +52,7 @@ x(1:6)=A*x(1:6)+B*acc_t;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Quaternion algorithm according to Farrel, pp 49.
 
-w_tb=u(4:6);
+w_tb=u_meansure_with_bias(4:6);
 
 P=w_tb(1)*dt;
 Q=w_tb(2)*dt;
@@ -68,6 +68,6 @@ OMEGA(4,1:4)=0.5*[-P -Q -R 0];
 v=norm(w_tb)*dt;
 
 if v~=0
-    x(7:10)=(cos(v/2)*eye(4)+2/v*sin(v/2)*OMEGA )*x(7:10);
+    p_v_theta(7:10)=(cos(v/2)*eye(4)+2/v*sin(v/2)*OMEGA )*p_v_theta(7:10);
 end
 return

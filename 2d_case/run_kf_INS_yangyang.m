@@ -6,7 +6,6 @@ clear all;
 load('data2d_select.mat');
 
 % initial value;
-X = [0;0;0;0;0];
 [X, P] = get_initial_value(data2d.GNSS.pos_EN);
 it_imu = 0;
 it_gps = 0;
@@ -23,7 +22,7 @@ for id_t_imu = 1:length(data2d.IMU.t)
     delta_t = 0.01;
     aL = data2d.IMU.acc(:, it_imu);
     yaw_rate = data2d.IMU.gyro(1, it_imu);
-    [X_bar, F] = get_state_transition_F(delta_t,yaw_rate,aL,X(1),X(2:3),X(4:5));
+    [X_bar, F] = get_state_transition_F(delta_t,yaw_rate,aL,X(1),X(2:3),X(4:5),X(6));
     Q  = get_Q();
     P_bar = F*P*F' + Q;
     
@@ -32,7 +31,7 @@ for id_t_imu = 1:length(data2d.IMU.t)
     if (it_gps + 1 <= length(data2d.GNSS.t)) && (t_imu == data2d.GNSS.t(it_gps + 1))
         it_gps
         it_gps = it_gps + 1;
-        H = zeros(2,5);
+        H = zeros(2,6);
         H(1:2,4:5) = eye(2,2);
         R = 4*eye(2,2);
         z = data2d.GNSS.pos_EN(:,it_gps);
@@ -40,7 +39,7 @@ for id_t_imu = 1:length(data2d.IMU.t)
         K = P_bar*H'*inv(H*P_bar*H' + R);
         X = X_bar + K*y;
         X(1) = normalize_theta(X(1));
-        P = (eye(5,5) - K*H)*P_bar;
+        P = (eye(6,6) - K*H)*P_bar;
         disp('get a gps');
         %pause(0.01);
         %if (mod(it_gps, 3) == 0)
@@ -77,4 +76,9 @@ figure;
 x = 1:length(X_list(2,:));
 plot(x,X_list(1,:));
 title('yaw');
+
+% bias;
+figure;
+plot(x, X_list(6,:));
+title('bias');
 

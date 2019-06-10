@@ -1,5 +1,5 @@
 function [fx, F] = get_state_transition_F(delta_t, yawrate,a_L,theta_t_1,v_t_1,s_t_1)
-theta_t = theta_t_1 + yawrate*delta_t;
+theta_t = theta_t_1 + (yawrate)*delta_t;
 theta_t = normalize_theta(theta_t);
 v_t = v_t_1 + to_R2d(theta_t_1)*a_L*delta_t;
 s_t = s_t_1 + v_t_1*delta_t+ 1/2*to_R2d(theta_t_1)*a_L*delta_t*delta_t;

@@ -1,4 +1,5 @@
 file = '/media/nvidia/TWOTB/data/INS/turtlebot.bag';
+file = '/home/m0/data/turtlebot/turtlebot.bag';
 bag = rosbag(file);
 
 %
@@ -19,6 +20,9 @@ data.GPS.altitude = [];
 t_prev_gps = t_model(i_model(1));
 
 for i = 1:length(i_imu)
+    if (mod(i,100) == 0)
+        i
+    end
     data.IMU.t = cat(2, data.IMU.t, bag_imu.MessageList{i_imu(i),1});
     imu_msgs = readMessages(bag_imu, i_imu(i));
     acc = [imu_msgs{1}.LinearAcceleration.X; imu_msgs{1}.LinearAcceleration.Y;imu_msgs{1}.LinearAcceleration.Z];
@@ -43,3 +47,8 @@ for i = 1:length(i_imu)
         data.GPS.altitude = cat(2, data.GPS.altitude, gps_altitude);
     end
 end
+
+save('../data/turtlebot1', 'data');
+
+
+

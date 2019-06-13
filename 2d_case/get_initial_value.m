@@ -1,7 +1,11 @@
 function [ X, P] = get_initial_value(poses)
 pose1 = poses(:,1);
 pose2 = poses(:,2);
-theta = atan2(pose2(2)-pose1(2), pose2(1)-pose1(1));
+if abs(pose1(1)-pose2(1)) < 1e-4
+    theta = 0;
+else
+    theta = atan2(pose2(2)-pose1(2), pose2(1)-pose1(1));
+end
 v_x = pose2(1) - pose1(1);
 v_y = pose2(2) - pose1(2);
 s = pose1;

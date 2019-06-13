@@ -1,16 +1,13 @@
 clear
-load('/home/nvidia/code/INS/data/GNSSaidedINS_data.mat');
-% gnss;
-data2d.GNSS.t = in_data.GNSS.t;
-data2d.GNSS.pos_EN = in_data.GNSS.pos_ned(2:-1:1,:);
-% imu
-data2d.IMU.t = in_data.IMU.t;
-data2d.IMU.acc = in_data.IMU.acc(2:-1:1,:);
-data2d.IMU.gyro = -in_data.IMU.gyro(3,:);
-save('../data/GNSSaidedINS_data2d', 'data2d');
+%load('/home/nvidia/code/INS/data/GPSaidedINS_data.mat');
+load('../data/turtlebot1.mat');
 
-x = 1:size(in_data.IMU.gyro,2);
-plot(x, in_data.IMU.gyro(1,:));
-hold on; plot(x, in_data.IMU.gyro(2,:));
-hold on; plot(x, in_data.IMU.gyro(3,:));
-legend('1','2','3');
+% GPS;
+data2d.GPS.t = data.GPS.t;
+data2d.GPS.pos_EN = data.GPS.pos(1:2,:);
+% imu
+data2d.IMU.t = data.IMU.t;
+data2d.IMU.acc = data.IMU.acc(1:2,:);
+data2d.IMU.gyro = -data.IMU.gyro(3,:);
+save('../data/turtlebot_data2d', 'data2d');
+

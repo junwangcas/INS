@@ -1,13 +1,11 @@
 clear all;
-%load('../data/GNSSaidedINS_data2d.mat');
+%load('../data/GPSaidedINS_data2d.mat');
+load('../data/turtlebot_data2d.mat');
 %data2d = select_data(data2d);
-
-%save('../data/data2d_select.mat','data2d');
-load('data2d_select.mat');
 
 % initial value;
 X = [0;0;0;0;0];
-[X, P] = get_initial_value(data2d.GNSS.pos_EN);
+[X, P] = get_initial_value(data2d.GPS.pos_EN);
 it_imu = 0;
 it_gps = 0;
 X_list = X;
@@ -15,12 +13,12 @@ P_list{1} = P;
 
 % plot gps;
 
-for id_t_imu = 1:length(data2d.IMU.t)
+for id_t_imu = 1:length(data2d.IMU.t) -1
     disp(id_t_imu);
     t_imu = data2d.IMU.t(id_t_imu);
     %% predict;
     it_imu = it_imu + 1;
-    delta_t = 0.01;
+    delta_t = data2d.IMU.t(id_t_imu + 1) - data2d.IMU.t(id_t_imu);
     aL = data2d.IMU.acc(:, it_imu);
     yaw_rate = data2d.IMU.gyro(1, it_imu);
     [X_bar, F] = get_state_transition_F(delta_t,yaw_rate,aL,X(1),X(2:3),X(4:5));
@@ -29,13 +27,13 @@ for id_t_imu = 1:length(data2d.IMU.t)
     
     %% update
     % check if the t equals the gps 
-    if (it_gps + 1 <= length(data2d.GNSS.t)) && (t_imu == data2d.GNSS.t(it_gps + 1))
+    if (it_gps + 1 <= length(data2d.GPS.t)) && (t_imu == data2d.GPS.t(it_gps + 1))
         it_gps
         it_gps = it_gps + 1;
         H = zeros(2,5);
         H(1:2,4:5) = eye(2,2);
         R = 0.1*eye(2,2);
-        z = data2d.GNSS.pos_EN(:,it_gps);
+        z = data2d.GPS.pos_EN(:,it_gps);
         y = z - H*X_bar;
         K = P_bar*H'*inv(H*P_bar*H' + R);
         X = X_bar + K*y;
@@ -46,7 +44,7 @@ for id_t_imu = 1:length(data2d.IMU.t)
         %if (mod(it_gps, 3) == 0)
 %             clf;
 %             scatter(X_list(4,:), X_list(5,:));
-%             hold on; scatter(data2d.GNSS.pos_EN(1,:),data2d.GNSS.pos_EN(2,:));
+%             hold on; scatter(data2d.GPS.pos_EN(1,:),data2d.GPS.pos_EN(2,:));
 %             xlabel('x-E');ylabel('y-north');
 %             waitforbuttonpress;
         %end
@@ -59,7 +57,7 @@ for id_t_imu = 1:length(data2d.IMU.t)
 end
 figure;
 scatter(X_list(4,:), X_list(5,:));
-hold on; scatter(data2d.GNSS.pos_EN(1,:),data2d.GNSS.pos_EN(2,:));
+hold on; scatter(data2d.GPS.pos_EN(1,:),data2d.GPS.pos_EN(2,:));
 xlabel('x-E');ylabel('y-north');
 title('position');
 

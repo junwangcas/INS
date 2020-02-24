@@ -1,6 +1,6 @@
-function [ X, P] = get_initial_value(poses)
-pose1 = poses(:,1);
-pose2 = poses(:,2);
+function [ X, P] = get_initial_value(poses, end_idx, start_idx)
+pose1 = poses(:,start_idx);
+pose2 = poses(:,end_idx);
 if abs(pose1(1)-pose2(1)) < 1e-4
     theta = 0;
 else

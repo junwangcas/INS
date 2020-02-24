@@ -1,10 +1,28 @@
 function [data2d] = select_data( data2d )
 % delete last ones;
-t_delete = [20, 300000];
-data2d = deletedata(data2d, t_delete);
-% delete the first ones;
-t_delete = [-1,0];
-data2d = deletedata(data2d, t_delete);
+% t_delete = [20, 300000];
+% data2d = deletedata(data2d, t_delete);
+% % delete the first ones;
+% t_delete = [-1,0];
+% data2d = deletedata(data2d, t_delete);
+data2d = filter_data(data2d);
+end
+
+
+function data2d = filter_data(data2d)
+leng = length(data2d.IMU.t);
+idx = leng;
+while idx > 0
+    if mod(idx, 100) ~= 0
+        idx
+        data2d.IMU.t(idx) = [];
+        data2d.IMU.gyro(:,idx) = [];
+        data2d.IMU.acc(:,idx) = [];
+        idx = idx - 1;
+    else     
+        idx = idx - 1;
+    end
+end
 end
 
 function data2d = deletedata(data2d, t_delete)

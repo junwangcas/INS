@@ -1,24 +1,27 @@
 clear all;
 %load('../data/GPSaidedINS_data2d.mat');
-load('../data/turtlebot_data2d.mat');
+%load('../data/turtlebot_data2d.mat');
+%load('../data/left_trans.mat');
+load('sin_simulation_data/sinmotiondata2d.mat');
 %data2d = select_data(data2d);
+if_fuse_gps = false;
 
 % initial value;
 X = [0;0;0;0;0];
-[X, P] = get_initial_value(data2d.GPS.pos_EN);
+[X, P] = get_initial_value(data2d.GPS.pos_EN, 50, 1);
 it_imu = 0;
 it_gps = 0;
 X_list = X;
 P_list{1} = P;
-
+delta_t_list = [];
 % plot gps;
-
 for id_t_imu = 1:length(data2d.IMU.t) -1
     disp(id_t_imu);
     t_imu = data2d.IMU.t(id_t_imu);
     %% predict;
     it_imu = it_imu + 1;
     delta_t = data2d.IMU.t(id_t_imu + 1) - data2d.IMU.t(id_t_imu);
+    delta_t_list = cat(1, delta_t_list,delta_t);
     aL = data2d.IMU.acc(:, it_imu);
     yaw_rate = data2d.IMU.gyro(1, it_imu);
     [X_bar, F] = get_state_transition_F(delta_t,yaw_rate,aL,X(1),X(2:3),X(4:5));
@@ -27,7 +30,7 @@ for id_t_imu = 1:length(data2d.IMU.t) -1
     
     %% update
     % check if the t equals the gps 
-    if (it_gps + 1 <= length(data2d.GPS.t)) && (t_imu == data2d.GPS.t(it_gps + 1))
+    if (if_fuse_gps && it_gps + 1 <= length(data2d.GPS.t)) && (t_imu == data2d.GPS.t(it_gps + 1))
         it_gps
         it_gps = it_gps + 1;
         H = zeros(2,5);
@@ -55,6 +58,12 @@ for id_t_imu = 1:length(data2d.IMU.t) -1
     X_list = cat(2, X_list, X);
     P_list = cat(1, P_list, P);
 end
+
+% check;
+%plot(delta_t_list);
+plot(X_list(1,:));
+
+
 figure;
 scatter(X_list(4,:), X_list(5,:));
 hold on; scatter(data2d.GPS.pos_EN(1,:),data2d.GPS.pos_EN(2,:));

@@ -5,8 +5,10 @@ bag = rosbag(file);
 %
 bag_imu = select(bag,'Topic','/imu');
 bag_modelstate = select(bag,'Topic','/gazebo/model_states');
+%% imu的频率200hz; model的频率1000hz;
 t_imu  = bag_imu.MessageList{:,1};
 t_model = bag_modelstate.MessageList{:,1};
+%% imu中的一个数值，对应一个model中的数值；
 [c, i_imu, i_model] = intersect(t_imu,t_model);
 
 %% imu选择原始频率，pose选择10hz;
@@ -48,7 +50,7 @@ for i = 1:length(i_imu)
     end
 end
 
-save('../data/turtlebot1', 'data');
+% save('../data/turtlebot1', 'data');
 
 
 

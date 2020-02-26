@@ -33,6 +33,13 @@ title('accelerate x');
 subplot(2,1,2);
 plot(ays);
 title('accelerate y');
+% speed;
+figure;
+subplot(2,1,1);
+plot(vxs);
+subplot(2,1,2);
+plot(vys);
+title('speed');
 
 
 

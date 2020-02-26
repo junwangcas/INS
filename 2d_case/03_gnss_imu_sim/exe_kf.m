@@ -1,9 +1,7 @@
-clear all;
-%load('../data/GPSaidedINS_data2d.mat');
-%load('../data/turtlebot_data2d.mat');
-load('../data/left_trans3.mat');
-%load('sin_simulation_data/sinmotiondata2d.mat');
-%data2d = select_data(data2d);
+function [outputArg1,outputArg2] = exe_kf(input_bag)
+output_bag = input_bag + "trans";
+transtodata2d(input_bag, output_bag);
+load(output_bag);
 if_fuse_gps = false;
 
 % initial value;
@@ -67,50 +65,58 @@ end
 
 % check;
 %plot(delta_t_list);
-plot(X_list(1,:));
-
-
 figure;
+subplot(3,3,1);
+plot(X_list(1,:));
+title('yaw estimation');
+
+subplot(3,3,2);
 scatter(X_list(4,:), X_list(5,:));
 hold on; scatter(data2d.GPS.pos_EN(1,:),data2d.GPS.pos_EN(2,:));
 xlabel('x-E');ylabel('y-north');
-title('position');
+title('estimate/GT position');
 
 % figure; 速度
-figure;
+subplot(3,3,3);
 x = 1:length(X_list(2,:));
 plot(x,X_list(2,:));
 hold on; plot(x,X_list(3,:));
 xlabel('time');ylabel('x, y speed');
 legend('x speed', 'y speed');
-title('speed');
-
-% yaw;
-figure;
-x = 1:length(X_list(2,:));
-plot(x,X_list(1,:));
-title('yaw');
+title('estimate speed');
 
 % acc-local
-figure;
-subplot(2,1,1);
+subplot(3,3,4);
 plot(data2d.IMU.acc(1,:));
-subplot(2,1,2);
+title('acc x local');
+subplot(3,3,5);
 plot(data2d.IMU.acc(2,:));
-title('acc xy local');
+title('acc y local');
 
 % acc-global
-figure;
-subplot(2,1,1);
 thetas = X_list(1,:);
 acc_global = zeros(2,length(data2d.IMU.acc));
 for i = 1:length(data2d.IMU.acc)
     acc_global(:,i) = to_R2d(thetas(i))*data2d.IMU.acc(:,i);
 end
-subplot(2,1,1);
+subplot(3,3,6);
 plot(acc_global(1,:));
-subplot(2,1,2);
+title('acc x global');
+subplot(3,3,7);
 plot(acc_global(2,:));
-title('acc xy global');
+title('acc y global');
+end
 
+function transtodata2d(input_bag, output_bag)
+%load('/home/nvidia/code/INS/data/GPSaidedINS_data.mat');
+load(input_bag);
 
+% GPS;
+data2d.GPS.t = data.GPS.t;
+data2d.GPS.pos_EN = data.GPS.pos(1:2,:);
+% imu
+data2d.IMU.t = data.IMU.t;
+data2d.IMU.acc = data.IMU.acc(1:2,:);
+data2d.IMU.gyro = data.IMU.gyro(3,:);
+save(output_bag, 'data2d');
+end

@@ -5,7 +5,7 @@ load(output_bag);
 if_fuse_gps = false;
 
 % initial value;
-X = [0;0;0;0;0];
+X = [0;0;0;0;0;0;0;0];
 [X, P] = get_initial_value(data2d.GPS.pos_EN, 2, 1);
 
 % for sin simulation
@@ -28,6 +28,7 @@ for id_t_imu = 1:length(data2d.IMU.t) -1
     delta_t_list = cat(1, delta_t_list,delta_t);
     aL = data2d.IMU.acc(:, it_imu);
     yaw_rate = data2d.IMU.gyro(1, it_imu);
+    
     [X_bar, F] = get_state_transition_F(delta_t,yaw_rate,aL,X(1),X(2:3),X(4:5));
     Q  = get_Q();
     P_bar = F*P*F' + Q;

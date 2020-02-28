@@ -8,12 +8,8 @@ else
 end
 v_x = pose2(1) - pose1(1);
 v_y = pose2(2) - pose1(2);
-s = pose1;
-X = [theta;v_x;v_y;s];
+X = [pose1; v_x; v_y; theta;0;0;0];
 
-P = eye(5,5);
-P(1,1) = 0.1;
-P(2:3,2:3) = eye(2,2);
-P(4:5,4:5) = eye(2,2);
+P = eye(8,8);
 end
 

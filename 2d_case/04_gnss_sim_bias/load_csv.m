@@ -1,11 +1,18 @@
-function [data] = load_csv(csv_dir, outputdata)
+function [data] = load_csv(csv_dir, outputdata, if_use_noise)
 ref_gps_file = csv_dir + "ref_gps.csv";
 ref_gps = csvread(ref_gps_file, 1);
-ref_imuacc_file = csv_dir + "ref_accel.csv";
+if if_use_noise
+    ref_imuacc_file = csv_dir + "accel-0.csv";
+    ref_imugyro_file = csv_dir + "gyro-0.csv";
+else
+    ref_imuacc_file = csv_dir + "ref_accel.csv";
+    ref_imugyro_file = csv_dir + "ref_gyro.csv";
+end
+
+
 ref_imuacc = csvread(ref_imuacc_file,1);
-ref_imugyro_file = csv_dir + "ref_gyro.csv";
 ref_imugyro = csvread(ref_imugyro_file,1);
-ref_imugyro = ref_imugyro/180.0*PI
+ref_imugyro = ref_imugyro/180.0*pi;
 
 time_file = csv_dir + "time.csv";
 times = csvread(time_file,1);
